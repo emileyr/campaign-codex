@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Trpc from "~/pages/api/trpc/[trpc]";
 import { api } from "~/utils/api";
 import { formatSlug } from "~/utils/slugs";
+import { Modal } from "./modals";
 
 type NewPostProps = {
   setRender?: (render: boolean) => void;
@@ -13,7 +13,7 @@ export const NewPost = ({ setRender, onSettled = () => {} }: NewPostProps) => {
   const [slug, setSlug] = useState<string>("");
   const [titleError, setTitleError] = useState<string | null>(null);
   const [slugError, setSlugError] = useState<string | null>(null);
-  const { mutate: createPost } = api.posts.create.useMutation({ onSettled });
+  const { mutate: createPost } = api.posts.new.useMutation({ onSettled });
 
   const updateTitle = (newTitle: string) => {
     setTitle(newTitle);
@@ -43,7 +43,7 @@ export const NewPost = ({ setRender, onSettled = () => {} }: NewPostProps) => {
       className="w-72 rounded bg-violet-900 p-4 sm:w-96"
       onSubmit={() => {}}
     >
-      <h1 className="text-lg">New Post</h1>
+      <h1 className="text-lg">New Page</h1>
       <input
         id="name-input"
         type="text"

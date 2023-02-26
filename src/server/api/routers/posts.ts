@@ -1,10 +1,11 @@
-import { title } from "process";
 import { z } from "zod";
 import { prisma } from "~/server/db";
-import { formatSlug } from "~/utils/slugs";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const postsRouter = createTRPCRouter({
+  findBySlug: protectedProcedure
+    .input(z.string().regex(/^[a-z\-]*$/))
+    .query(({ input }) => {}),
   index: protectedProcedure
     .input(
       z.object({
@@ -49,7 +50,7 @@ export const postsRouter = createTRPCRouter({
         skip: page - 1,
       });
     }),
-  create: protectedProcedure
+  new: protectedProcedure
     .input(z.object({ title: z.string().min(1), slug: z.string().min(1) }))
     .mutation(({ input, ctx }) => {
       const { session } = ctx;
