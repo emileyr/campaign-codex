@@ -42,9 +42,10 @@ model Account {
 model Session {
     id           String   @id @default(cuid())
     sessionToken String   @unique
-    userId       String
     expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -53,6 +54,8 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    isDm          Boolean   @default(false)
+    isVerified    Boolean   @default(false)
     accounts      Account[]
     sessions      Session[]
 }
@@ -63,4 +66,32 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Post {
+    id       String @id @default(cuid())
+    userId   String
+    slug     String @unique
+    title    String @default("")
+    subTitle String @default("")
+    // TODO: Convert to JSON type when switching to mysql
+    body     String @default("{}")
+
+    insertedAt DateTime @default(now())
+    updatedAt  DateTime @default(now())
+
+    sections PostSection[]
+
+    @@index([slug])
+}
+
+model PostSection {
+    id     String @id @default(cuid())
+    slug   String
+    postId String
+    post   Post   @relation(fields: [postId], references: [id])
+
+    @@unique([postId, slug])
+    @@index([postId])
+    @@index([slug])
 }

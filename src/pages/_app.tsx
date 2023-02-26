@@ -6,14 +6,21 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
+export const mainHtmlId = "main";
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <main
+      id={mainHtmlId}
+      className="min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white"
+    >
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </main>
   );
 };
 
