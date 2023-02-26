@@ -68,6 +68,13 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+// TODO: Need to set up visibility stuff when on planetscale
+// enum Visibility {
+//     Personal
+//     DM
+//     Party
+// }
+
 model Post {
     id       String @id @default(cuid())
     userId   String

@@ -16,6 +16,7 @@ const getQuerySlug = (query: ParsedUrlQuery) => {
 
 const PostShowPage: NextPage = () => {
   const { query } = useRouter();
+  const postSlug = getQuerySlug(query);
 
   return (
     <>

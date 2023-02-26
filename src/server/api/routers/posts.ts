@@ -1,11 +1,20 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "~/server/db";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const postsRouter = createTRPCRouter({
   findBySlug: protectedProcedure
-    .input(z.string().regex(/^[a-z\-]*$/))
-    .query(({ input }) => {}),
+    .input(
+      z
+        .string()
+        .regex(/^[a-z\-]*$/)
+        .nullish()
+    )
+    .query(({ input }) => {
+      if (!input) throw new TRPCError({ code: "NOT_FOUND" });
+      return prisma.post.findFirstOrThrow({ where: { slug: input } });
+    }),
   index: protectedProcedure
     .input(
       z.object({
